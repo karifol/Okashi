@@ -14,6 +14,7 @@
 		C4AEB4232C1E6D590084B103 /* SerchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AEB4222C1E6D590084B103 /* SerchView.swift */; };
 		C4AEB4252C1E6FFA0084B103 /* SerchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AEB4242C1E6FFA0084B103 /* SerchData.swift */; };
 		C4AEB4292C1E8EEB0084B103 /* MenueBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AEB4282C1E8EEB0084B103 /* MenueBarView.swift */; };
+		C4AEB42B2C1EA9150084B103 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4AEB42A2C1EA9150084B103 /* DetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		C4AEB4222C1E6D590084B103 /* SerchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerchView.swift; sourceTree = "<group>"; };
 		C4AEB4242C1E6FFA0084B103 /* SerchData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerchData.swift; sourceTree = "<group>"; };
 		C4AEB4282C1E8EEB0084B103 /* MenueBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenueBarView.swift; sourceTree = "<group>"; };
+		C4AEB42A2C1EA9150084B103 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				C4AEB4152C1E6B740084B103 /* ContentView.swift */,
 				C4AEB4222C1E6D590084B103 /* SerchView.swift */,
 				C4AEB4282C1E8EEB0084B103 /* MenueBarView.swift */,
+				C4AEB42A2C1EA9150084B103 /* DetailView.swift */,
 				C4AEB4242C1E6FFA0084B103 /* SerchData.swift */,
 				C4AEB4172C1E6B750084B103 /* Assets.xcassets */,
 				C4AEB4192C1E6B750084B103 /* Okashi.entitlements */,
@@ -149,6 +152,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C4AEB4232C1E6D590084B103 /* SerchView.swift in Sources */,
+				C4AEB42B2C1EA9150084B103 /* DetailView.swift in Sources */,
 				C4AEB4292C1E8EEB0084B103 /* MenueBarView.swift in Sources */,
 				C4AEB4252C1E6FFA0084B103 /* SerchData.swift in Sources */,
 				C4AEB4162C1E6B740084B103 /* ContentView.swift in Sources */,
