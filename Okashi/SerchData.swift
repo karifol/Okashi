@@ -81,6 +81,17 @@ enum Kana: Codable {
         }
         // 複数要素
         let item: [Item]?
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            if let itemArray = try? container.decode([Item].self, forKey: .item) {
+                item = itemArray
+            } else if let singleItem = try? container.decode(Item.self, forKey: .item) {
+                item = [singleItem]
+            } else {
+                throw DecodingError.dataCorruptedError(forKey: .item, in: container, debugDescription: "Item could not be decoded")
+            }
+        }
     }
     // お菓子のリスト
     var okashiList: [OkashiItem] = []
@@ -119,17 +130,23 @@ enum Kana: Codable {
 
             // 受け取ったJSONデータをパースして格納
             // 2重でデコードする
+
             // 1回目はデータ本体があるか確認するため
             let firstDecoder = JSONDecoder()
             let firstJson = try firstDecoder.decode(FirstJson.self, from: data)
-
-
+            // countが0の場合は何もしない
+            if firstJson.count == "0" {
+                print("count == 0")
+                return
+            }
 
             let mainDecoder = JSONDecoder()
             let json = try mainDecoder.decode(ResultJson.self, from: data)
 
+            // countが1の場合はitemがないので配列でラップする
+            print(data)
+
             // お菓子の情報が取得できているか確認
-            // Itemが1つの場合、配列になっていないので、配列に変換する
             guard let items = json.item else { return }
             // お菓子のリストを初期化
             okashiList.removeAll()

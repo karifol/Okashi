@@ -14,7 +14,12 @@ struct SerchView: View {
     // 入力された文字列を保持する状態変数
     @State var inputText = ""
     @State private var isSheetPresented = false
-    @State private var okashiData: OkashiItem?
+    @State private var okashiData: OkashiItem? = nil
+    
+    init(){
+        okashiDataList.serchOkashi(keyword: inputText)
+        okashiData = okashiDataList.okashiList.first
+    }
     
     var body: some View {
         VStack {
@@ -69,9 +74,7 @@ struct SerchView: View {
                         Text(okashi.name)
                     }
                 }
-                .sheet(item: $okashiData, onDismiss: {
-                    okashiData = nil
-                }) { okashi in
+                .sheet(item: $okashiData) { okashi in
                     DetailView(
                         name: okashi.name,
                         kana: okashi.kana,

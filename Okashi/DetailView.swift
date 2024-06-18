@@ -68,16 +68,3 @@ struct DetailView: View {
     }
 }
 
-#Preview {
-    DetailView(
-        name: "ばかうけ（夏カレー）",
-        kana: "ばかうけなつかれー",
-        maker: "栗山製菓",
-        price: "157",
-        type: "senbei",
-        regist: "2000年7月3日",
-        url: "https://sysbird.jp/toriko/2000/07/03/%E3%81%B0%E3%81%8B%E3%81%86%E3%81%91%E5%A4%8F%E3%82%AB%E3%83%AC%E3%83%BC/",
-        image: URL(string: "https://sysbird.jp/toriko/wp-content/blogs.dir/2/files/533.gif")!,
-        comment: "<p>ばかうけもカレー味となっては黙っていられない。いつもの甘いのり味とは違って、サクサクでスパイシー。当本舗の願いが通じたのか、今年はカレー味が流行っている。やはり夏はカレーである。そして、やはりお菓子はカレー味である。</p> "
-    )
-}
