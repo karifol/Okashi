@@ -18,7 +18,6 @@ struct SerchView: View {
     
     init(){
         okashiDataList.serchOkashi(keyword: inputText)
-        okashiData = okashiDataList.okashiList.first
     }
     
     var body: some View {
@@ -74,19 +73,19 @@ struct SerchView: View {
                         Text(okashi.name)
                     }
                 }
-                .sheet(item: $okashiData) { okashi in
-                    DetailView(
-                        name: okashi.name,
-                        kana: okashi.kana,
-                        maker: okashi.maker,
-                        price: okashi.price,
-                        type: okashi.type,
-                        regist: okashi.regist,
-                        url: okashi.url,
-                        image: okashi.image,
-                        comment: okashi.comment
-                    )
-                }
+            }
+            .sheet(item: $okashiData) { okashi in
+                DetailView(
+                    name: okashi.name,
+                    kana: okashi.kana,
+                    maker: okashi.maker,
+                    price: okashi.price,
+                    type: okashi.type,
+                    regist: okashi.regist,
+                    url: okashi.url,
+                    image: okashi.image,
+                    comment: okashi.comment
+                )
             }
         }
 

@@ -25,10 +25,10 @@ struct MenueBarView: View {
                     Text("検索")
                 }
                 .tag(1)
-            Text("3")
+            NewView()
                 .tabItem {
                     Image(systemName: "wand.and.stars")
-                    Text("新商品")
+                    Text("NEW")
                 }
                 .tag(2)
             Text("4")
