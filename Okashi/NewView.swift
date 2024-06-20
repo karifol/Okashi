@@ -23,26 +23,70 @@ struct NewView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.bottom)
                 .background(.orange)
-
-            ForEach(okashiDataList.okashiList) { okashi in
-                Button {
-                    self.okashiData = okashi
-                } label: {
+            ScrollView {
+                ForEach(okashiDataList.okashiList) { okashi in
                     HStack {
-                        AsyncImage(url: okashi.image) { image in
-                            image
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 40)
-                        } placeholder: {
-                            ProgressView()
+                        Spacer()
+                        VStack {
+                            Text(okashi.regist)
+                                .foregroundStyle(.gray)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Text(okashi.name)
+                                .font(.title2)
+                                .foregroundStyle(.black)
+                                // bold
+                                .fontWeight(.bold)
+                            AsyncImage(url: okashi.image) { image in
+                                image
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(height: 100)
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            Text(okashi.shortComment + "...")
+                                .foregroundStyle(.black)
+                            Button {
+                                self.okashiData = okashi
+                            } label: {
+                                Text("続きはこちら")
+                                    .foregroundStyle(.blue)
+                                    .underline()
+                            }
+                            Divider()
+                            HStack {
+                                Text(okashi.maker)
+                                    .foregroundStyle(.black)
+                                Text(okashi.price + "円")
+                                    .foregroundStyle(.black)
+                            }
                         }
-                        Text(okashi.name)
+                        .cornerRadius(10)
+                        .frame(maxWidth: .infinity-10)
+                        .padding()
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.gray, lineWidth: 2)
+                        )
+                        Spacer()
                     }
                 }
             }
         }
         .frame(maxHeight: .infinity, alignment: .top)
+        .sheet(item: $okashiData) { okashi in
+            DetailView(
+                name: okashi.name,
+                kana: okashi.kana,
+                maker: okashi.maker,
+                price: okashi.price,
+                type: okashi.type,
+                regist: okashi.regist,
+                url: okashi.url,
+                image: okashi.image,
+                comment: okashi.comment
+            )
+        }
     }
 }
 

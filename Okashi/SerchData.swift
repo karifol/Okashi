@@ -19,6 +19,7 @@ struct OkashiItem: Identifiable{
     let url: String
     let image: URL
     let comment: String
+    let shortComment: String
 }
 
 enum Price: Codable {
@@ -201,6 +202,8 @@ enum Kana: Codable {
                             typeString = "その他"
                     }
 
+                    let commentString = comment.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
+
                     // １つのお菓子を構造体でまとめて管理
                     let okashi = OkashiItem(
                         name: name,
@@ -211,7 +214,8 @@ enum Kana: Codable {
                         regist: regist,
                         url: url,
                         image: image,
-                        comment: comment
+                        comment: commentString,
+                        shortComment: String(commentString.prefix(50))
                     )
                     // お菓子の配列へ追加
                     okashiList.append(okashi)
