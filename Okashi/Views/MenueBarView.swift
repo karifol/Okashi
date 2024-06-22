@@ -9,40 +9,34 @@ import SwiftUI
 
 struct MenueBarView: View {
     
-    @State var selection: Int = 2
+    @State var selection: Int = 1
 
     var body: some View {
         TabView(selection: $selection) {
-            Text("1")
+            MenueView()
                 .tabItem {
                     Image(systemName: "menucard")
                     Text("メニュー")
                 }
                 .tag(0)
-            SerchView()
-                .tabItem {
-                    Image(systemName: "magnifyingglass")
-                    Text("検索")
-                }
-                .tag(1)
             NewView()
                 .tabItem {
                     Image(systemName: "wand.and.stars")
                     Text("NEW")
                 }
-                .tag(2)
-            Text("4")
+                .tag(1)
+            SearchView()
                 .tabItem {
-                    Image(systemName: "map")
-                    Text("地域限定")
+                    Image(systemName: "magnifyingglass")
+                    Text("検索")
+                }
+                .tag(2)
+            ListView()
+                .tabItem {
+                    Image(systemName: "list.bullet.clipboard")
+                    Text("一覧")
                 }
                 .tag(3)
-            Text("5")
-                .tabItem {
-                    Image(systemName: "figure.and.child.holdinghands")
-                    Text("年代別")
-                }
-                .tag(4)
         }
         .accentColor(.orange)
     }

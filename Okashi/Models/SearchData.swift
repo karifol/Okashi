@@ -1,8 +1,8 @@
 //
-//  SerchData.swift
+//  SearchData.swift
 //  Okashi
 //
-//  Created by 堀ノ内海斗 on 2024/06/16.
+//  Created by 堀ノ内海斗 on 2024/06/22.
 //
 
 import SwiftUI
@@ -22,58 +22,41 @@ struct OkashiItem: Identifiable{
     let shortComment: String
 }
 
-enum Price: Codable {
-    case string(String)
-    case dict([String: String])
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        if let x = try? container.decode(String.self) {
-            self = .string(x)
-            return
-        }
-        if let x = try? container.decode([String: String].self) {
-            self = .dict(x)
-            return
-        }
-        throw DecodingError.typeMismatch(Price.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for Price"))
-    }
-}
-
-enum Kana: Codable {
-    case string(String)
-    case dict([String: String])
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        if let x = try? container.decode(String.self) {
-            self = .string(x)
-            return
-        }
-        if let x = try? container.decode([String: String].self) {
-            self = .dict(x)
-            return
-        }
-        throw DecodingError.typeMismatch(Kana.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for Kana"))
-    }
-}
-
 // お菓子データ検索用のクラス
-@Observable class SerchData {
+@Observable class SearchData {
 
+    enum Kana: Codable {
+        case string(String)
+        case dict([String: String])
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            if let x = try? container.decode(String.self) {
+                self = .string(x)
+                return
+            }
+            if let x = try? container.decode([String: String].self) {
+                self = .dict(x)
+                return
+            }
+            throw DecodingError.typeMismatch(Kana.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for Kana"))
+        }
+    }
+    
+    // JSONの大枠構造
     struct FirstJson: Codable {
         let status: String
         let count: String
     }
 
-    // JSONのデータ構造
+    // JSONの構造
     struct ResultJson: Codable {
         // JSONのitem内のデータ構造
         struct Item: Codable {
             let name: String?
             let kana: Kana?
             let maker: String?
-            let price: Price?
+            let price: Kana?
             let type: String?
             let regist: String?
             let url: String?
@@ -93,24 +76,25 @@ enum Kana: Codable {
                 throw DecodingError.dataCorruptedError(forKey: .item, in: container, debugDescription: "Item could not be decoded")
             }
         }
+
     }
     // お菓子のリスト
     var okashiList: [OkashiItem] = []
 
-    // Web API検索用メソッド　第一引数：keyword　検索したいわーそ
-    func serchOkashi(keyword: String) {
+    // Web API検索用メソッド
+    func serchOkashi(keyword: String, year: String, type: String) {
         // Taskは非同期で処理を実行できる
         Task {
             // ここから先は非同期で実行される
             // 非同期でお菓子を検索する
-            await search(keyword: keyword)
+            await search(keyword: keyword, year: year, type: type)
         }
     }
 
     // 非同期でお菓子データを取得
     // @MainActorを使いメインスレッドで更新する
     @MainActor
-    private func search(keyword: String) async {
+    private func search(keyword: String, year: String, type: String) async {
         // お菓子の検索キーワードをURLエンコードする
         guard let keyword_encode = keyword.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         else {
@@ -118,12 +102,10 @@ enum Kana: Codable {
         }
 
         // リクエストURLの組み立て
-        guard let req_url = URL(string: "https://sysbird.jp/toriko/api/?apikey=guest&format=json&keyword=\(keyword_encode)&max=10&order=d")
+        guard let req_url = URL(string: "https://sysbird.jp/toriko/api/?apikey=guest&format=json&keyword=\(keyword_encode)&max=10&order=d&year=\(year)&type=\(type)")
         else {
             return
         }
-
-        print(req_url)
 
         do {
             // リクエストURLからダウンロード
@@ -138,14 +120,12 @@ enum Kana: Codable {
             // countが0の場合は何もしない
             if firstJson.count == "0" {
                 print("count == 0")
+                okashiList.removeAll()
                 return
             }
 
             let mainDecoder = JSONDecoder()
             let json = try mainDecoder.decode(ResultJson.self, from: data)
-
-            // countが1の場合はitemがないので配列でラップする
-            print(data)
 
             // お菓子の情報が取得できているか確認
             guard let items = json.item else { return }
@@ -197,11 +177,11 @@ enum Kana: Codable {
                             typeString = "チョコレート"
                         case "candy":
                             typeString = "飴・ガム"
-                        // その他の場合は「その他」とする
                         default:
                             typeString = "その他"
                     }
 
+                    // htmlタグを削除
                     let commentString = comment.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
 
                     // １つのお菓子を構造体でまとめて管理
@@ -226,7 +206,4 @@ enum Kana: Codable {
             print(error)
         }
     }
-
-
 }
-

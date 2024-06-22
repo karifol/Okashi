@@ -9,20 +9,24 @@ import SwiftUI
 
 struct NewView: View {
 
-    var okashiDataList = SerchData()
+    var okashiDataList = SearchData()
     @State private var okashiData: OkashiItem? = nil
     init(){
-        okashiDataList.serchOkashi(keyword: "")
+        okashiDataList.serchOkashi(keyword: "", year: "", type: "")
     }
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text("新登録お菓子")
-                .foregroundStyle(.white)
-                .font(.title)
-                .frame(maxWidth: .infinity)
-                .padding(.bottom)
-                .background(.orange)
+            HStack {
+                Image(systemName: "wand.and.stars")
+                Text("NEW")
+            }
+            .foregroundStyle(.white)
+            .font(.title2)
+            .frame(maxWidth: .infinity)
+            .background(.orange)
+            .fontWeight(.bold)
+
             ScrollView {
                 ForEach(okashiDataList.okashiList) { okashi in
                     HStack {
@@ -36,23 +40,30 @@ struct NewView: View {
                                 .foregroundStyle(.black)
                                 // bold
                                 .fontWeight(.bold)
-                            AsyncImage(url: okashi.image) { image in
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(height: 100)
-                            } placeholder: {
-                                ProgressView()
+                            HStack {
+                                AsyncImage(url: okashi.image) { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(height: 100)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                VStack {
+                                    Text(okashi.shortComment + "...")
+                                        .foregroundStyle(.black)
+                                    Button {
+                                        self.okashiData = okashi
+                                    } label: {
+                                        Text("続きはこちら")
+                                            .foregroundStyle(.blue)
+                                            .underline()
+                                    }
+                                    // 右下に表示
+                                    .frame(maxWidth: .infinity, alignment: .trailing)
+                                }
                             }
-                            Text(okashi.shortComment + "...")
-                                .foregroundStyle(.black)
-                            Button {
-                                self.okashiData = okashi
-                            } label: {
-                                Text("続きはこちら")
-                                    .foregroundStyle(.blue)
-                                    .underline()
-                            }
+
                             Divider()
                             HStack {
                                 Text(okashi.maker)
