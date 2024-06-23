@@ -12,7 +12,7 @@ struct NewView: View {
     var okashiDataList = SearchData()
     @State private var okashiData: OkashiItem? = nil
     init(){
-        okashiDataList.serchOkashi(keyword: "", year: "", type: "")
+        okashiDataList.serchOkashi(keyword: "", year: "", type: "", max: 10, offset:0)
     }
 
     var body: some View {

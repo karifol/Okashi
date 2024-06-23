@@ -74,7 +74,7 @@ extension SearchView {
     private var searchButtonView: some View {
         NavigationLink{
             SearchResultView(
-                keyword: "いちご",
+                keyword: inputText,
                 year: selectedYear,
                 type: selectedType
             )

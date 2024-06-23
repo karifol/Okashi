@@ -53,7 +53,7 @@ struct SearchResultView: View {
             }
         }
         .onAppear {
-            okashiDataList.serchOkashi(keyword: keyword, year: year, type: type)
+            okashiDataList.serchOkashi(keyword: keyword, year: year, type: type, max:10, offset:0)
         }
         .sheet(item: $okashiData) { okashi in
             DetailView(

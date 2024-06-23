@@ -82,19 +82,20 @@ struct OkashiItem: Identifiable{
     var okashiList: [OkashiItem] = []
 
     // Web API検索用メソッド
-    func serchOkashi(keyword: String, year: String, type: String) {
+    func serchOkashi(keyword: String, year: String, type: String, max: Int, offset: Int) {
         // Taskは非同期で処理を実行できる
         Task {
             // ここから先は非同期で実行される
             // 非同期でお菓子を検索する
-            await search(keyword: keyword, year: year, type: type)
+            await search(keyword: keyword, year: year, type: type, max: max, offset: offset)
         }
     }
 
     // 非同期でお菓子データを取得
     // @MainActorを使いメインスレッドで更新する
     @MainActor
-    private func search(keyword: String, year: String, type: String) async {
+    private func search(keyword: String, year: String, type: String, max: Int, offset: Int) async {
+        print(keyword)
         // お菓子の検索キーワードをURLエンコードする
         guard let keyword_encode = keyword.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         else {
@@ -102,10 +103,12 @@ struct OkashiItem: Identifiable{
         }
 
         // リクエストURLの組み立て
-        guard let req_url = URL(string: "https://sysbird.jp/toriko/api/?apikey=guest&format=json&keyword=\(keyword_encode)&max=10&order=d&year=\(year)&type=\(type)")
+        guard let req_url = URL(string: "https://sysbird.jp/toriko/api/?apikey=guest&format=json&keyword=\(keyword_encode)&max=\(max)&order=d&year=\(year)&type=\(type)&offset=\(offset)")
         else {
             return
         }
+        
+        print(req_url)
 
         do {
             // リクエストURLからダウンロード
