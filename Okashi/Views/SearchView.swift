@@ -44,12 +44,15 @@ struct SearchView: View {
 
 extension SearchView {
     private var headerView: some View {
-        Text("検索")
-            .foregroundStyle(.white)
-            .font(.title2)
-            .frame(maxWidth: .infinity)
-            .background(.orange)
-            .fontWeight(.bold)
+        HStack {
+            Image(systemName: "magnifyingglass")
+            Text("検索")
+        }
+        .foregroundStyle(.white)
+        .font(.title2)
+        .frame(maxWidth: .infinity)
+        .background(.orange)
+        .fontWeight(.bold)
     }
 
     private var keywordView: some View {
